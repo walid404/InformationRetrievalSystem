@@ -1,6 +1,5 @@
 import os
 
-documentsNames = []
 
 def ReadDocumentCollection(path):
     documentsContent = []
