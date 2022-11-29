@@ -4,12 +4,16 @@ from nltk import word_tokenize
 
 def phraseQuery(positionalIndexDictionary, phrase):
     query, approxmate = extractQuery(phrase)
-
+    for element in query:
+        if element not in positionalIndexDictionary.keys():
+            return 404
     if query != -1:
         intermidite = positionalIndexDictionary[query[0]]
         for index in range(1, len(query)):
             approxmateNumber = 1 if approxmate.get(index) == None else approxmate.get(index)
             intermidite = matchDocument(intermidite, positionalIndexDictionary[query[index]], approxmateNumber)
+            if(intermidite == -1):
+                return 404
         return intermidite.keys()
     else:
         return -1
@@ -51,7 +55,7 @@ def matchDocument(term1, term2, appromateNumber):
         if documentsContainterm1[i] == documentsContainterm2[j]:
             postList1 = term1[documentsContainterm1[i]]
             postList2 = term2[documentsContainterm2[j]]
-            matchedDocument[documentsContainterm1[i]] = matchPostion(postList1, postList2, appromateNumber)
+            matchedDocument[documentsContainterm1[i]] = matchPostions(postList1, postList2, appromateNumber)
             i += 1
             j += 1
         elif documentsContainterm1[i] < documentsContainterm2[j]:
@@ -59,11 +63,11 @@ def matchDocument(term1, term2, appromateNumber):
         else:
             j += 1
 
-    return matchedDocument
+    return matchedDocument if len(matchedDocument.keys()) > 0 else -1
 
 
 
-def matchPostion(postList1, postList2, appromateNumber):
+def matchPostions(postList1, postList2, appromateNumber):
     k, l = 0, 0
     matchedPostion = []
     while (k != len(postList1) and l != len(postList2)):

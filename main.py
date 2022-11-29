@@ -5,9 +5,8 @@ import Query
 import os
 
 path = 'DocumentCollection'
-documetTermDict = DocumentToken.documentstokens(path)
-positionalIndexDict, termFrequency = Index.postionalIndex(documetTermDict)
-
+documentTermDict = DocumentToken.documentstokens(path)
+positionalIndexDict, termFrequency = Index.postionalIndex(documentTermDict)
 while(True):
     print('To print positional index please enter 1')
     print('To write phrase query please enter 2')
@@ -28,6 +27,9 @@ while(True):
             matchedDocument = Query.phraseQuery(positionalIndexDict, phrase)
             if matchedDocument == -1:
                 print('invalid approximate Query')
+
+            elif matchedDocument == 404:
+                print('No document have matched with query')
             else:
                 print('matched document is : ' + Index.listToString(matchedDocument))
                 flag = input('are you want to see document content? for Yes enter (Y/y) for No enter any anthor chracter : ')
