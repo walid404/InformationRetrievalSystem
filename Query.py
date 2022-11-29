@@ -4,10 +4,12 @@ from nltk import word_tokenize
 
 def phraseQuery(positionalIndexDictionary, phrase):
     query, approxmate = extractQuery(phrase)
-    for element in query:
-        if element not in positionalIndexDictionary.keys():
-            return 404
+
     if query != -1:
+        for element in query:
+            if element not in positionalIndexDictionary.keys():
+                return 404
+
         intermidite = positionalIndexDictionary[query[0]]
         for index in range(1, len(query)):
             approxmateNumber = 1 if approxmate.get(index) == None else approxmate.get(index)
@@ -24,22 +26,25 @@ def extractQuery(phrase):
     terms = word_tokenize(phrase)
     query = []
     aproximate = dict()
-    for term in terms:
-        if term[0] == '/':
-            if notValidApproxmate(term):
-                return -1, -1
-            aproximate[len(query)] = int(term[1:])
-        else:
-            query.append(term)
+    if notValidApproxmate(terms[0]) and notValidApproxmate(terms[-1]):
+        for term in terms:
+            if term[0] == '/':
+                if notValidApproxmate(term):
+                    return -1, -1
+                aproximate[len(query)] = int(term[1:])
+            else:
+                query.append(term)
 
-    return query, aproximate
+        return query, aproximate
+    else:
+        return -1, -1
 
 
 
 def notValidApproxmate(string):
     if (len(string) == 1):
         return True
-    elif not string[1:].isdigit():
+    elif not string[1:].isdecimal():
         return True
     else:
         return False
