@@ -7,7 +7,7 @@ def phraseQuery(positionalIndexDictionary, phrase):
 
     if query != -1:
         intermidite = positionalIndexDictionary[query[0]]
-        for index in range(1, len(query)-1):
+        for index in range(1, len(query)):
             approxmateNumber = 1 if approxmate.get(index) == None else approxmate.get(index)
             intermidite = matchDocument(intermidite, positionalIndexDictionary[query[index]], approxmateNumber)
         return intermidite.keys()
