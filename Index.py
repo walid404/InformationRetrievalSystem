@@ -25,25 +25,3 @@ def addTermsToDict(documentName, termsList):
             positionalIndexDict[term][documentName].append(index + 1)
             termFrequency[term] += 1
 
-
-
-
-
-def printPostionalIndex(positionalIndexDict, termFrequency):
-    terms = positionalIndexDict.keys()
-    for term in terms:
-        print('<{}, {};'.format(term, termFrequency[term]))
-        documentscontainTerm = positionalIndexDict[term].keys()
-        for document in documentscontainTerm:
-            print('{}: {};'.format(document, listToString(positionalIndexDict[term][document])))
-        print('>')
-
-
-def listToString(list):
-    s = ''
-    for index, item in enumerate(list):
-        if index != 0:
-            s += ', '
-        s += str(item)
-
-    return s

@@ -2,7 +2,9 @@ import Document
 import DocumentToken
 import Index
 import Query
+import Print
 import os
+
 
 path = 'DocumentCollection'
 documentTermDict = DocumentToken.documentstokens(path)
@@ -18,7 +20,7 @@ while(True):
         choice = int(choice)
         match choice:
             case 1:
-                Index.printPostionalIndex(positionalIndexDict, termFrequency)
+                Print.printPostionalIndex(positionalIndexDict, termFrequency)
 
             case 2:
                 print('instructions for phrase query')
@@ -35,15 +37,15 @@ while(True):
                 elif matchedDocument == 404:
                     print('No document have matched with query')
                 else:
-                    print('matched document is : ' + Index.listToString(matchedDocument))
-                    flag = input('are you want to see document content? for Yes enter (Y/y) for No enter any anthor chracter : ')
+                    print('matched document is : ' + Print.listToString(matchedDocument))
+                    flag = input('are you want to see document content?\n for Yes enter (Y/y) for No enter any anthor chracter : ')
                     if(flag == 'y' or flag == 'Y'):
                         for document in matchedDocument:
                             print(document + ' : ' + Document.ReadDocument(os.path.join(path, document)))
             case _:
                 print('invalid choice')
 
-    again = input('are you want to do another operation? for Yes enter (Y/y) for No enter any anthor chracter : ')
+    again = input('are you want to do another operation?\n for Yes enter (Y/y) for No enter any anthor chracter : ')
     if(again != 'y' and again != 'Y'):
         break
 print('Thank you for using our Information Retrieval System ^_^')
