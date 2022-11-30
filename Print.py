@@ -30,6 +30,8 @@ def printMatrixWithInt(matrix, coulmns, rows):
         for document in matrix[index]:
             print('%-10s'%str(document),end='')
 
+    print()
+
 
 
 def printMatrixWithFloat(matrix, coulmns, rows):
@@ -42,7 +44,7 @@ def printMatrixWithFloat(matrix, coulmns, rows):
         print('%-15s' %row, end='')
         for document in matrix[index]:
             print('%-10f' %document, end='')
-
+    print()
 
 def printIDF(termIDFDict):
     print('%50s %-5s %-10s' %("term", 'df', 'IDF'))
