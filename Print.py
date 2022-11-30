@@ -50,3 +50,9 @@ def printIDF(termIDFDict):
     print('%50s %-5s %-10s' %("term", 'df', 'IDF'))
     for term in termIDFDict.keys():
         print('%50s: %-5s %-10f' % (term, termIDFDict.get(term)[0], termIDFDict.get(term)[1]))
+
+
+
+def printDocumentsLength(documentLengthDict):
+    for term in documentLengthDict.keys():
+        print('%50s: %-10f' % (term + ' length', documentLengthDict.get(term)))

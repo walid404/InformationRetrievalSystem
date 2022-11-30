@@ -11,12 +11,20 @@ path = 'DocumentCollection'
 documentTermDict = DocumentToken.documentstokens(path)
 positionalIndexDict, termFrequency = Index.postionalIndex(documentTermDict)
 tf_matrix, documents, terms, = IDF.counterVictorize(documentTermDict)
-idf = IDF.computeIDF(tf_matrix, len(documents), terms)
-tf_idf = IDF.computeTF_IDF(tf_matrix, idf)
+tf_w_matrix = IDF.computeTf_w_matrix(tf_matrix)
+idf = IDF.computeIDF(tf_w_matrix, len(documents), terms)
+tf_idf = IDF.computeTF_IDF(tf_w_matrix, idf)
+documentLengthDict = IDF.computeDocumentsLength(tf_idf, documents)
+normalizedTF_IDF = IDF.computeNormalizedTF_IDF(tf_idf, documentLengthDict)
 while(True):
     print('To print positional index please enter 1')
     print('To write phrase query please enter 2')
-    print('To print TF-IDF matrix please enter 3')
+    print('To print Term Frequency(TF) matrix please enter 3')
+    print('To print Term Frequency wtf(1 + log) matrix please enter 4')
+    print('To print IDF matrix please enter 5')
+    print('To print TF-IDF matrix please enter 6')
+    print('To print documents length matrix please enter 7')
+    print('To print normalized TF-IDF matrix please enter 8')
     choice = input('please enter your choice: ')
     if not choice.isdecimal():
         print('please enter valid number')
@@ -49,8 +57,27 @@ while(True):
                             print(document + ' : ' + Document.ReadDocument(os.path.join(path, document)))
 
             case 3:
-                Print.printMatrixWithFloat(tf_matrix, documents, terms)
+                print('%70s' %"Term Frequency(TF)")
+                Print.printMatrixWithInt(tf_matrix, documents, terms)
 
+            case 4:
+                print('%70s' % "Term Frequency wtf(1 + log)")
+                Print.printMatrixWithFloat(tf_w_matrix, documents, terms)
+
+            case 5:
+                Print.printIDF(idf)
+
+            case 6:
+                print('%70s' % "TF-IDF")
+                Print.printMatrixWithFloat(tf_idf, documents, terms)
+
+            case 7:
+                print('%50s' % "Documents Length")
+                Print.printDocumentsLength(documentLengthDict)
+
+            case 8:
+                print('%70s' % "normalized TF-IDF")
+                Print.printMatrixWithFloat(normalizedTF_IDF, documents, terms)
             case _:
                 print('invalid choice')
 
