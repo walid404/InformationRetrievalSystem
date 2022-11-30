@@ -1,5 +1,7 @@
 from nltk import word_tokenize
 
+import Tokenizer
+
 
 def phraseQuery(positionalIndexDictionary, phrase):
     query, proximity = extractQuery(phrase)
@@ -33,7 +35,7 @@ def extractQuery(phrase):
                 proximity[len(query)] = int(term[1:])
             else:
                 query.append(term)
-
+        query = Tokenizer.filterStopwords(query)
         return query, proximity
     else:
         return -1, -1

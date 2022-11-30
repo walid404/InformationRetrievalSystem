@@ -9,7 +9,7 @@ import os
 
 path = 'DocumentCollection'
 documentTermDict = DocumentToken.documentstokens(path)
-positionalIndexDict, termFrequency = Index.postionalIndex(documentTermDict)
+positionalIndexDict, documentFrequency = Index.postionalIndex(documentTermDict)
 tf_matrix, documents, terms, = IDF.counterVictorize(documentTermDict)
 tf_w_matrix = IDF.computeTf_w_matrix(tf_matrix)
 idf = IDF.computeIDF(tf_w_matrix, len(documents), terms)
@@ -33,7 +33,7 @@ while(True):
         choice = int(choice)
         match choice:
             case 1:
-                Print.printPostionalIndex(positionalIndexDict, termFrequency)
+                Print.printPostionalIndex(positionalIndexDict, documentFrequency)
 
             case 2:
                 print('instructions for phrase query')
@@ -84,4 +84,4 @@ while(True):
     again = input('are you want to do another operation?\n for Yes enter (Y/y) for No enter any anthor chracter : ')
     if(again != 'y' and again != 'Y'):
         break
-print('Thank you for using our Information Retrieval System ^_^')
+print('\n\nThank you for using our Information Retrieval System ^_^')
