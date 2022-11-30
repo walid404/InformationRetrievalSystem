@@ -26,6 +26,7 @@ def getStopWords():
     stopWord = set(nltk.corpus.stopwords.words('english'))
     stopWord.remove('in')
     stopWord.remove('to')
+    stopWord.remove('where')
     return  stopWord
 
 
