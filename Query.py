@@ -1,9 +1,8 @@
 from nltk import word_tokenize
 
 
-
 def phraseQuery(positionalIndexDictionary, phrase):
-    query, approxmate = extractQuery(phrase)
+    query, proximity = extractQuery(phrase)
 
     if query != -1:
         for element in query:
@@ -12,8 +11,8 @@ def phraseQuery(positionalIndexDictionary, phrase):
 
         intermidite = positionalIndexDictionary[query[0]]
         for index in range(1, len(query)):
-            approxmateNumber = 1 if approxmate.get(index) == None else approxmate.get(index)
-            intermidite = matchDocument(intermidite, positionalIndexDictionary[query[index]], approxmateNumber)
+            proximityNumber = 1 if proximity.get(index) == None else proximity.get(index)
+            intermidite = matchDocument(intermidite, positionalIndexDictionary[query[index]], proximityNumber)
             if(intermidite == -1):
                 return 404
         return intermidite.keys()
@@ -25,23 +24,23 @@ def phraseQuery(positionalIndexDictionary, phrase):
 def extractQuery(phrase):
     terms = word_tokenize(phrase)
     query = []
-    aproximate = dict()
-    if notValidApproxmate(terms[0]) and notValidApproxmate(terms[-1]):
+    proximity = dict()
+    if notValidproximity(terms[0]) and notValidproximity(terms[-1]):
         for term in terms:
             if term[0] == '/':
-                if notValidApproxmate(term):
+                if notValidproximity(term):
                     return -1, -1
-                aproximate[len(query)] = int(term[1:])
+                proximity[len(query)] = int(term[1:])
             else:
                 query.append(term)
 
-        return query, aproximate
+        return query, proximity
     else:
         return -1, -1
 
 
 
-def notValidApproxmate(string):
+def notValidproximity(string):
     if (len(string) == 1):
         return True
     elif not string[1:].isdecimal():
@@ -51,7 +50,7 @@ def notValidApproxmate(string):
 
 
 
-def matchDocument(term1, term2, appromateNumber):
+def matchDocument(term1, term2, proximityNumber):
     matchedDocument = dict()
     documentsContainterm1 = list(term1.keys())
     documentsContainterm2 = list(term2.keys())
@@ -60,7 +59,7 @@ def matchDocument(term1, term2, appromateNumber):
         if documentsContainterm1[i] == documentsContainterm2[j]:
             postList1 = term1[documentsContainterm1[i]]
             postList2 = term2[documentsContainterm2[j]]
-            matchedDocument[documentsContainterm1[i]] = matchPostions(postList1, postList2, appromateNumber)
+            matchedDocument[documentsContainterm1[i]] = matchPostions(postList1, postList2, proximityNumber)
             i += 1
             j += 1
         elif documentsContainterm1[i] < documentsContainterm2[j]:
@@ -72,11 +71,11 @@ def matchDocument(term1, term2, appromateNumber):
 
 
 
-def matchPostions(postList1, postList2, appromateNumber):
+def matchPostions(postList1, postList2, proximityNumber):
     k, l = 0, 0
     matchedPostion = []
     while (k != len(postList1) and l != len(postList2)):
-        if postList1[k] + appromateNumber >= postList2[l]:
+        if postList1[k] + proximityNumber >= postList2[l]:
             matchedPostion.append(postList2[l])
             k += 1
             l += 1

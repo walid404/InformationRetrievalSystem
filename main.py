@@ -26,13 +26,13 @@ while(True):
                 print('instructions for phrase query')
                 print('you must write phrase query with space between each term')
                 print('Notes')
-                print('optionally you can write an approximate query like this: term /number term')
-                print('in the approximate query, you can’t use / only or followed by characters ')
+                print('optionally you can write an proximity query like this: term /number term')
+                print('in the proximity query, you can’t use / only or followed by characters ')
                 print('it must be / followed with a number followed with space ')
                 phrase = input('please enter your phrase query as we mentioned before: ')
                 matchedDocument = Query.phraseQuery(positionalIndexDict, phrase)
                 if matchedDocument == -1:
-                    print('invalid approximate Query')
+                    print('invalid proximity Query')
 
                 elif matchedDocument == 404:
                     print('No document have matched with query')
