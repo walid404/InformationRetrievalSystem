@@ -1,5 +1,7 @@
 import math
 
+import Ranking
+
 
 def computeIDF(termsFrequencyMatrix, numberOfDocuments, terms):
     termIDFDict = dict()
@@ -23,8 +25,12 @@ def computeDocumentsLength(tf_idf, documents):
     documentsLengthDict = dict()
     for col, document in enumerate(documents):
         sum = 0
-        for row in range(len(tf_idf)):
-            sum = sum + tf_idf[row][col] ** 2
+        if len(tf_idf) > 1:
+            documentVector = Ranking.extractDocumentVector(tf_idf, col)
+        else:
+            documentVector = tf_idf[0]
+        for dimension in documentVector:
+            sum = sum + dimension ** 2
         documentsLengthDict[document] = sum ** 0.5
 
     return documentsLengthDict
@@ -33,8 +39,11 @@ def computeDocumentsLength(tf_idf, documents):
 
 def computeNormalizedTF_IDF(tf_idf, documentsLengthDict):
     documents = list(documentsLengthDict.keys())
-    return [[(tf_idf[row][col])/documentsLengthDict.get(documents[col]) for col in range(len(tf_idf[0]))]
-            for row in range(len(tf_idf))]
+    if len(tf_idf) > 1:
+        return [[(tf_idf[row][col])/documentsLengthDict.get(documents[col]) for col in range(len(tf_idf[0]))]
+                for row in range(len(tf_idf))]
+    else:
+        return [tf_idf[0][col]/documentsLengthDict.get(documents[0]) for col in range(len(tf_idf[0]))]
 
 
 def counterVictorize(documentTermDict):
@@ -70,3 +79,9 @@ def getTerms(documentTermDict):
     return sorted(list(terms))
 
 
+def queryToVector(query, terms):
+    queryVector = [0 for _ in terms]
+    for term in query:
+        queryVector[terms.index(term)] += 1
+
+    return queryVector
