@@ -46,18 +46,23 @@ while(True):
                 print('in the proximity query, you can’t use / only or followed by characters ')
                 print('it must be / followed with a number followed with space \n')
                 phrase = input('please enter your phrase query as we mentioned before: ')
-                matchedDocument = Query.phraseQuery(positionalIndexDict, phrase)
-                if matchedDocument == -1:
-                    print('invalid proximity Query\n')
+                if len(phrase) > 0:
+                    matchedDocument = Query.phraseQuery(positionalIndexDict, phrase)
+                    if matchedDocument == 0:
+                        print('You have entered stopwords that are not embedded in the system')
+                    elif matchedDocument == -1:
+                        print('invalid proximity Query\n')
 
-                elif matchedDocument == 404:
-                    print('No document have matched with query\n')
+                    elif matchedDocument == 404:
+                        print('No document have matched with query\n')
+                    else:
+                        print('matched document is : ' + Print.listToString(matchedDocument))
+                        flag = input('are you want to see document content?\n for Yes enter (Y/y) for No enter any anthor chracter : ')
+                        if(flag == 'y' or flag == 'Y'):
+                            for document in matchedDocument:
+                                print(document + ' : ' + Document.ReadDocument(os.path.join(path, document)))
                 else:
-                    print('matched document is : ' + Print.listToString(matchedDocument))
-                    flag = input('are you want to see document content?\n for Yes enter (Y/y) for No enter any anthor chracter : ')
-                    if(flag == 'y' or flag == 'Y'):
-                        for document in matchedDocument:
-                            print(document + ' : ' + Document.ReadDocument(os.path.join(path, document)))
+                    print('Empty Query!!\n')
 
             case 3:
                 print('%70s' %"Term Frequency(TF)")

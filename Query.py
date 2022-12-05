@@ -5,7 +5,8 @@ import Tokenizer
 
 def phraseQuery(positionalIndexDictionary, phrase):
     query, proximity = extractQuery(phrase)
-
+    if len(query) ==0 :
+        return 0
     if query != -1:
         for element in query:
             if element not in positionalIndexDictionary.keys():
