@@ -17,6 +17,7 @@ def phraseQuery(positionalIndexDictionary, phrase):
             intermidite = matchDocument(intermidite, positionalIndexDictionary[query[index]], proximityNumber)
             if(intermidite == -1):
                 return 404
+
         return intermidite.keys()
     else:
         return -1
@@ -61,7 +62,9 @@ def matchDocument(term1, term2, proximityNumber):
         if documentsContainterm1[i] == documentsContainterm2[j]:
             postList1 = term1[documentsContainterm1[i]]
             postList2 = term2[documentsContainterm2[j]]
-            matchedDocument[documentsContainterm1[i]] = matchPostions(postList1, postList2, proximityNumber)
+            matchedpostionsList = matchPostions(postList1, postList2, proximityNumber)
+            if len(matchedpostionsList) > 0 :
+                matchedDocument[documentsContainterm1[i]] = matchedpostionsList
             i += 1
             j += 1
         elif documentsContainterm1[i] < documentsContainterm2[j]:
@@ -76,7 +79,7 @@ def matchDocument(term1, term2, proximityNumber):
 def matchPostions(postList1, postList2, proximityNumber):
     k, l = 0, 0
     matchedPostion = []
-    while (k != len(postList1) and l != len(postList2)):
+    while k < len(postList1) and l < len(postList2):
         if postList1[k] + proximityNumber >= postList2[l]:
             matchedPostion.append(postList2[l])
             k += 1
