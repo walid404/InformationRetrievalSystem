@@ -29,7 +29,8 @@ while(True):
     print('To print normalized TF-IDF matrix please enter 8')
     print('To write phrase query and retrieve document ranked with cosine similarity please enter 9')
     print('To Write phrase query and retrieve document intersected with positional index\n'
-          ' and ranking the result with cosine similarity please enter 10\n')
+          ' and ranking the result with cosine similarity please enter 10')
+    print('To Do all in one please enter 11\n')
     choice = input('please enter your choice: ')
     if not choice.isdecimal():
         print('please enter valid number')
@@ -140,12 +141,7 @@ while(True):
                         matchedDocumentTremDict = dict()
                         for document in matchedDocument:
                             matchedDocumentTremDict[document] = documentTermDict.get(document)
-                        md_tf_matrix, md_documents, md_terms, = IDF.counterVictorize(matchedDocumentTremDict)
-                        md_tf_w_matrix = IDF.computeTf_w_matrix(md_tf_matrix)
-                        md_idf = IDF.computeIDF(md_tf_w_matrix, len(md_documents), md_terms)
-                        md_tf_idf = IDF.computeTF_IDF(md_tf_w_matrix, md_idf)
-                        md_documentLengthDict = IDF.computeDocumentsLength(md_tf_idf, md_documents)
-                        md_normalizedTF_IDF = IDF.computeNormalizedTF_IDF(md_tf_idf, md_documentLengthDict)
+
                         query, _ = Query.extractQuery(phrase)
                         if (len(query) != 0):
                             queryTF_raw = IDF.queryToVector(query, terms)
@@ -159,6 +155,72 @@ while(True):
                             print()
                             newMatrix, newCol, newRow, rowIndexList, newColIndex = Query.extractMatrix(collectionSimilarityWithQuery,
                                                                                           documents, terms, matchedDocument,query)
+                            Print.printQueryProcessing(queryTF_raw, queryTF_w[0], idf, queryTF_IDF[0],
+                                                       queryNormalizedTF_IDF, terms, rowIndexList)
+                            print("\nquery Legnth = " + str(queryLength.get("query")) + '\n')
+                            Print.printMatrixWithFloat(newMatrix, newCol, newRow)
+                            Print.printSum(rankedListOfCollection, newColIndex)
+                            sortedIndex = sorted(range(len(rankedListOfCollection)),
+                                                 key=lambda k: rankedListOfCollection[k], reverse=True)
+                            mostReleventsdocuments = [documents[index] for index in sortedIndex if index in newColIndex]
+                        print('\nmatched document is : ' + Print.listToString(mostReleventsdocuments))
+                        flag = input('are you want to see document content?\n'
+                                     ' for Yes enter (Y/y) for No enter any anthor chracter : ')
+                        if (flag == 'y' or flag == 'Y'):
+                            for document in mostReleventsdocuments:
+                                print(document + ' : ' + Document.ReadDocument(os.path.join(path, document)))
+                else:
+                    print('Empty Query!!\n')
+
+            case 11:
+                Print.printPostionalIndex(positionalIndexDict, documentFrequency)
+                print('\n%70s' % "Term Frequency(TF)")
+                Print.printMatrixWithInt(tf_matrix, documents, terms)
+                print('\n%70s' % "Term Frequency wtf(1 + log)")
+                Print.printMatrixWithFloat(tf_w_matrix, documents, terms)
+                print('\n')
+                Print.printIDF(idf)
+                print('\n%70s' % "TF-IDF")
+                Print.printMatrixWithFloat(tf_idf, documents, terms)
+                print('\n%50s' % "Documents Length")
+                Print.printDocumentsLength(documentLengthDict)
+                print('\n%70s' % "normalized TF-IDF")
+                Print.printMatrixWithFloat(normalizedTF_IDF, documents, terms)
+                print('\ninstructions for phrase query')
+                print('you must write phrase query with space between each term')
+                print('Notes')
+                print('optionally you can write an proximity query like this: term /number term')
+                print('in the proximity query, you can’t use / only or followed by characters ')
+                print('it must be / followed with a number followed with space \n')
+                phrase = input('please enter your phrase query as we mentioned before: ')
+                if len(phrase) > 0:
+                    matchedDocument = Query.phraseQuery(positionalIndexDict, phrase)
+                    if matchedDocument == 0:
+                        print('You have entered stopwords that are not embedded in the system')
+                    elif matchedDocument == -1:
+                        print('invalid proximity Query\n')
+
+                    elif matchedDocument == 404:
+                        print('No document have matched with query\n')
+                    else:
+                        matchedDocumentTremDict = dict()
+                        for document in matchedDocument:
+                            matchedDocumentTremDict[document] = documentTermDict.get(document)
+
+                        query, _ = Query.extractQuery(phrase)
+                        if (len(query) != 0):
+                            queryTF_raw = IDF.queryToVector(query, terms)
+                            queryTF_w = IDF.computeTf_w_matrix([queryTF_raw])
+                            queryTF_IDF = IDF.computeTF_IDF(queryTF_w, idf)
+                            queryLength = IDF.computeDocumentsLength(queryTF_IDF, ["query"])
+                            queryNormalizedTF_IDF = IDF.computeNormalizedTF_IDF(queryTF_IDF, queryLength)
+                            collectionSimilarityWithQuery, rankedListOfCollection = \
+                                Ranking.RankCollectionWithQuery(queryNormalizedTF_IDF, normalizedTF_IDF)
+
+                            print()
+                            newMatrix, newCol, newRow, rowIndexList, newColIndex = Query.extractMatrix(
+                                collectionSimilarityWithQuery,
+                                documents, terms, matchedDocument, query)
                             Print.printQueryProcessing(queryTF_raw, queryTF_w[0], idf, queryTF_IDF[0],
                                                        queryNormalizedTF_IDF, terms, rowIndexList)
                             print("\nquery Legnth = " + str(queryLength.get("query")) + '\n')
