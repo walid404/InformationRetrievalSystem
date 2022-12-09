@@ -58,14 +58,14 @@ def printDocumentsLength(documentLengthDict):
         print('%50s: %-10f' % (term + ' length', documentLengthDict.get(term)))
 
 
-def printQueryProcessing(tf_raw, tf_w, idf, TF_IDF, normalizedTF_IDF, raws):
+def printQueryProcessing(tf_raw, tf_w, idf, TF_IDF, normalizedTF_IDF, raws, indexList):
     print("%20s %10s %15s %10s %10s %10s" %("term", "TF_raw", "w tf(1+log tf)", "idf", "tf*idf", "normalized"))
-    for index in range(len(raws)):
+    for index in indexList:
         print("%20s %10d %15f %10f %10f %10f" % (raws[index], tf_raw[index], tf_w[index], idf.get(raws[index])[1],
                                                  TF_IDF[index], normalizedTF_IDF[index]))
 
 
-def printSum(rankingList):
+def printSum(rankingList, rowIndex):
     print('%-15s' %"sum", end='')
-    for item in rankingList:
-        print('%-10f' %item, end='')
+    for index in rowIndex:
+        print('%-10f' %rankingList[index], end='')

@@ -12,7 +12,6 @@ def cosineSimilarity(vector1, vector2):
 def RankCollectionWithQuery(queryVector, normalizedTF_IDF):
     detailsMatrix = []
     ranklist = []
-    print(normalizedTF_IDF[0])
     for index in range(len(normalizedTF_IDF[0])):
         vector = extractDocumentVector(normalizedTF_IDF, index)
         rank, detailslist = cosineSimilarity(vector, queryVector)

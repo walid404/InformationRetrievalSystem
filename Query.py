@@ -93,3 +93,20 @@ def matchPostions(postList1, postList2, proximityNumber):
     return matchedPostion
 
 
+def extractMatrix(matrix, cols, rows, matchedDocument, query):
+    rowIndexList = []
+    for term in query:
+        rowIndexList.append(rows.index(term))
+
+    colIndexlist = []
+    for document in matchedDocument:
+        colIndexlist.append(cols.index(document))
+
+    newCol = [cols[index] for index in colIndexlist]
+    newRows = [rows[index] for index in rowIndexList]
+    newMatrix = [[matrix[row][col] for col in colIndexlist] for row in rowIndexList ]
+
+
+    return newMatrix, newCol, newRows, rowIndexList, colIndexlist
+
+
