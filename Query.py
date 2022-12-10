@@ -56,8 +56,8 @@ def notValidproximity(string):
 
 def matchDocument(term1, term2, proximityNumber):
     matchedDocument = dict()
-    documentsContainterm1 = list(term1.keys())
-    documentsContainterm2 = list(term2.keys())
+    documentsContainterm1 = sorted(list(term1.keys()))
+    documentsContainterm2 = sorted(list(term2.keys()))
     i,j = 0,0
     while (i != len(documentsContainterm1) and j != len(documentsContainterm2)):
         if documentsContainterm1[i] == documentsContainterm2[j]:

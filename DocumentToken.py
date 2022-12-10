@@ -3,10 +3,12 @@ import Document
 
 
 def documentstokens(path):
-    documentContent = Document.ReadDocumentCollection(path)
+    documentContent, documentsNames = Document.ReadDocumentCollection(path)
+    documentsNamesDict = Document.RenameDocuments(documentsNames)
+    documentsNames = list(documentsNamesDict.keys())
     documetTermDict = dict()
     collectionTokenized = Tokenizer.collectionTokenize(documentContent)
-    for documentName, documentTokens in zip(Document.documentsNames, collectionTokenized):
+    for documentName, documentTokens in zip(documentsNames, collectionTokenized):
         documetTermDict[documentName] = Tokenizer.filterStopwords(documentTokens)
 
-    return documetTermDict
+    return documetTermDict, documentsNamesDict

@@ -9,7 +9,7 @@ import os
 
 
 path = 'DocumentCollection'
-documentTermDict = DocumentToken.documentstokens(path)
+documentTermDict, documentNamesDict = DocumentToken.documentstokens(path)
 positionalIndexDict, documentFrequency = Index.postionalIndex(documentTermDict)
 tf_matrix, documents, terms, = IDF.counterVictorize(documentTermDict)
 tf_w_matrix = IDF.computeTf_w_matrix(tf_matrix)
@@ -63,7 +63,7 @@ while(True):
                         flag = input('are you want to see document content?\n for Yes enter (Y/y) for No enter any anthor chracter : ')
                         if(flag == 'y' or flag == 'Y'):
                             for document in matchedDocument:
-                                print(document + ' : ' + Document.ReadDocument(os.path.join(path, document)))
+                                print(document + ' : ' + Document.ReadDocument(os.path.join(path, documentNamesDict.get(document))))
                 else:
                     print('Empty Query!!\n')
 
@@ -116,7 +116,7 @@ while(True):
                     flag = input('are you want to see document content?\n for Yes enter (Y/y) for No enter any anthor chracter : ')
                     if (flag == 'y' or flag == 'Y'):
                         for document in mostThreeReleventsdocuments:
-                            print(document + ' : ' + Document.ReadDocument(os.path.join(path, document)))
+                            print(document + ' : ' + Document.ReadDocument(os.path.join(path, documentNamesDict.get(document))))
                 else:
                     print('\nNo document have matched with query\n')
 
@@ -168,7 +168,7 @@ while(True):
                                      ' for Yes enter (Y/y) for No enter any anthor chracter : ')
                         if (flag == 'y' or flag == 'Y'):
                             for document in mostReleventsdocuments:
-                                print(document + ' : ' + Document.ReadDocument(os.path.join(path, document)))
+                                print(document + ' : ' + Document.ReadDocument(os.path.join(path, documentNamesDict.get(document))))
                 else:
                     print('Empty Query!!\n')
 
@@ -234,7 +234,7 @@ while(True):
                                      ' for Yes enter (Y/y) for No enter any anthor chracter : ')
                         if (flag == 'y' or flag == 'Y'):
                             for document in mostReleventsdocuments:
-                                print(document + ' : ' + Document.ReadDocument(os.path.join(path, document)))
+                                print(document + ' : ' + Document.ReadDocument(os.path.join(path, documentNamesDict.get(document))))
                 else:
                     print('Empty Query!!\n')
 

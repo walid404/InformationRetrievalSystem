@@ -72,11 +72,13 @@ def computeTf_w_matrix(tf_matrix):
 
 
 def getTerms(documentTermDict):
-    terms = set()
+    terms = []
     for documentTerm in documentTermDict.values():
         for item in documentTerm:
-            terms.add(item)
-    return sorted(list(terms))
+            if item not in terms:
+                terms.append(item)
+
+    return terms
 
 
 def queryToVector(query, terms):
