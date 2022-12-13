@@ -1,11 +1,10 @@
-import nltk.corpus
-from nltk.tokenize import word_tokenize
+import Document
 
 
 def collectionTokenize( documentsContant):
     collectionTokenized = []
     for document in documentsContant:
-        collectionTokenized.append(word_tokenize(document))
+        collectionTokenized.append(Tokenize(document))
 
     return collectionTokenized
 
@@ -23,10 +22,26 @@ def filterStopwords(documentTokens):
 
 
 def getStopWords():
-    stopWord = set(nltk.corpus.stopwords.words('english'))
-    stopWord.remove('in')
-    stopWord.remove('to')
-    stopWord.remove('where')
+    stopword = Document.ReadDocument('English Stopwords')
+    stopWord = Tokenize(stopword)
     return  stopWord
+
+def Tokenize(document, sep=' '):
+    tokens = []
+    token = ''
+    for index, char in enumerate(document):
+        if char == sep and (index == 0 or index == len(document)-1):
+            continue
+        elif char == sep:
+            if token != '':
+                tokens.append(token)
+                token = ''
+        else:
+            token += char
+    if token != '':
+        tokens.append(token)
+
+    return tokens
+
 
 

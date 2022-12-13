@@ -1,5 +1,3 @@
-from nltk import word_tokenize
-
 import Tokenizer
 
 
@@ -26,7 +24,7 @@ def phraseQuery(positionalIndexDictionary, phrase):
 
 
 def extractQuery(phrase):
-    terms = word_tokenize(phrase)
+    terms = Tokenizer.Tokenize(phrase)
     query = []
     proximity = dict()
     if notValidproximity(terms[0]) and notValidproximity(terms[-1]):
