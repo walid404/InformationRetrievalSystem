@@ -29,10 +29,8 @@ def getStopWords():
 def Tokenize(document, sep=' '):
     tokens = []
     token = ''
-    for index, char in enumerate(document):
-        if char == sep and (index == 0 or index == len(document)-1):
-            continue
-        elif char == sep:
+    for char in document:
+        if char == sep:
             if token != '':
                 tokens.append(token)
                 token = ''
@@ -42,6 +40,5 @@ def Tokenize(document, sep=' '):
         tokens.append(token)
 
     return tokens
-
 
 
