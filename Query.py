@@ -79,7 +79,7 @@ def matchPostions(postList1, postList2, proximityNumber):
     k, l = 0, 0
     matchedPostion = []
     while k < len(postList1) and l < len(postList2):
-        if(proximityNumber == 1 and postList1[k] + proximityNumber <= postList2[l]):
+        if(proximityNumber == 1 and postList1[k] + proximityNumber == postList2[l]):
             matchedPostion.append(postList2[l])
             k += 1
             l += 1
