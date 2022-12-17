@@ -129,6 +129,7 @@ while(True):
                 print('it must be / followed with a number followed with space \n')
                 phrase = input('please enter your phrase query as we mentioned before: ')
                 if len(phrase) > 0:
+                    phrase = phrase.lower()
                     matchedDocument = Query.phraseQuery(positionalIndexDict, phrase)
                     if matchedDocument == 0:
                         print('You have entered stopwords that are not embedded in the system')
@@ -194,6 +195,7 @@ while(True):
                 print('it must be / followed with a number followed with space \n')
                 phrase = input('please enter your phrase query as we mentioned before: ')
                 if len(phrase) > 0:
+                    phrase = phrase.lower()
                     matchedDocument = Query.phraseQuery(positionalIndexDict, phrase)
                     if matchedDocument == 0:
                         print('You have entered stopwords that are not embedded in the system')

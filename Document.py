@@ -26,7 +26,7 @@ def ReadDocument(documentPath):
     document = open(documentPath + '.txt', 'r')
     content = document.read()
     document.close()
-    return content
+    return content.lower()
 
 
 
