@@ -50,6 +50,7 @@ while(True):
                 print('it must be / followed with a number followed with space \n')
                 phrase = input('please enter your phrase query as we mentioned before: ')
                 if len(phrase) > 0:
+                    phrase = phrase.lower()
                     matchedDocument = Query.phraseQuery(positionalIndexDict, phrase)
                     if matchedDocument == 0:
                         print('You have entered stopwords that are not embedded in the system')
@@ -92,33 +93,37 @@ while(True):
 
             case 9:
                 phrase = input('please enter your query: ')
-                query, _ = Query.extractQuery(phrase)
-                query = Ranking.filterOfUnknownWords(terms, query)
-                if (len(query) != 0):
+                if len(phrase) > 0:
+                    phrase = phrase.lower()
+                    query, _ = Query.extractQuery(phrase)
+                    query = Ranking.filterOfUnknownWords(terms, query)
+                    if (len(query) != 0):
 
-                    queryTF_raw = IDF.queryToVector(query, terms)
-                    queryTF_w = IDF.computeTf_w_matrix([queryTF_raw])
-                    queryTF_IDF = IDF.computeTF_IDF(queryTF_w, idf)
-                    queryLength = IDF.computeDocumentsLength(queryTF_IDF, ["query"])
-                    queryNormalizedTF_IDF = IDF.computeNormalizedTF_IDF(queryTF_IDF,queryLength)
-                    collectionSimilarityWithQuery, rankedListOfCollection =\
-                        Ranking.RankCollectionWithQuery(queryNormalizedTF_IDF, normalizedTF_IDF)
+                        queryTF_raw = IDF.queryToVector(query, terms)
+                        queryTF_w = IDF.computeTf_w_matrix([queryTF_raw])
+                        queryTF_IDF = IDF.computeTF_IDF(queryTF_w, idf)
+                        queryLength = IDF.computeDocumentsLength(queryTF_IDF, ["query"])
+                        queryNormalizedTF_IDF = IDF.computeNormalizedTF_IDF(queryTF_IDF,queryLength)
+                        collectionSimilarityWithQuery, rankedListOfCollection =\
+                            Ranking.RankCollectionWithQuery(queryNormalizedTF_IDF, normalizedTF_IDF)
 
-                    print()
-                    newMatrix, newCol, newRow, rowIndexList, newColIndex = Query.extractMatrix(collectionSimilarityWithQuery, documents, terms, documents, query)
-                    Print.printQueryProcessing(queryTF_raw, queryTF_w[0], idf, queryTF_IDF[0], queryNormalizedTF_IDF, terms, rowIndexList)
-                    print("\nquery Legnth = " + str(queryLength.get("query")) + '\n')
-                    Print.printMatrixWithFloat(newMatrix, newCol, newRow)
-                    Print.printSum(rankedListOfCollection, newColIndex)
-                    sortedIndex = sorted(range(len(rankedListOfCollection)), key=lambda k: rankedListOfCollection[k],reverse=True)
-                    mostThreeReleventsdocuments = [documents[index] for index in sortedIndex[:3]]
-                    print("\nthe most three relevant document is ", Print.listToString(mostThreeReleventsdocuments))
-                    flag = input('are you want to see document content?\n for Yes enter (Y/y) for No enter any anthor chracter : ')
-                    if (flag == 'y' or flag == 'Y'):
-                        for document in mostThreeReleventsdocuments:
-                            print(document + ' : ' + Document.ReadDocument(os.path.join(path, documentNamesDict.get(document))))
+                        print()
+                        newMatrix, newCol, newRow, rowIndexList, newColIndex = Query.extractMatrix(collectionSimilarityWithQuery, documents, terms, documents, query)
+                        Print.printQueryProcessing(queryTF_raw, queryTF_w[0], idf, queryTF_IDF[0], queryNormalizedTF_IDF, terms, rowIndexList)
+                        print("\nquery Legnth = " + str(queryLength.get("query")) + '\n')
+                        Print.printMatrixWithFloat(newMatrix, newCol, newRow)
+                        Print.printSum(rankedListOfCollection, newColIndex)
+                        sortedIndex = sorted(range(len(rankedListOfCollection)), key=lambda k: rankedListOfCollection[k],reverse=True)
+                        mostThreeReleventsdocuments = [documents[index] for index in sortedIndex[:3]]
+                        print("\nthe most three relevant document is ", Print.listToString(mostThreeReleventsdocuments))
+                        flag = input('are you want to see document content?\n for Yes enter (Y/y) for No enter any anthor chracter : ')
+                        if (flag == 'y' or flag == 'Y'):
+                            for document in mostThreeReleventsdocuments:
+                                print(document + ' : ' + Document.ReadDocument(os.path.join(path, documentNamesDict.get(document))))
+                    else:
+                        print('\nNo document have matched with query\n')
                 else:
-                    print('\nNo document have matched with query\n')
+                    print('Empty Query!!\n')
 
             case 10:
                 print('instructions for phrase query')
